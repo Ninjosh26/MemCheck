@@ -21,7 +21,7 @@ struct MemCheck {
     }
 
     // Use to change if message should be printed after program terminates
-    void endDisplay(bool b) {
+    void display(bool b) {
         displayOnDestroy = b;
     }
 
