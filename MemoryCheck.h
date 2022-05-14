@@ -4,11 +4,12 @@
 
 // Struct that stores information about heap allocation
 struct MemCheck {
-    size_t numAlloc; // Number of total heap allocations
-    size_t numDealloc; // Number of total heap deallocations
-    size_t bytesAlloc; // Total bytes allocated on heap
-    size_t bytesDealloc; // Total bytes deallocated on heap
-    size_t currByteCount; // Curr bytes allocated on the heap
+    size_t numAlloc = 0; // Number of total heap allocations
+    size_t numDealloc = 0; // Number of total heap deallocations
+    size_t bytesAlloc = 0; // Total bytes allocated on heap
+    size_t bytesDealloc = 0; // Total bytes deallocated on heap
+    size_t currByteCount = 0; // Curr bytes allocated on the heap
+    bool displayOnDestroy = true; // Defaults to display heap memory remaining on program termination
 
     // Function that prints memory information
     void memStats() {
@@ -19,7 +20,16 @@ struct MemCheck {
         std::cout << "[Current Bytes Allocated]: " << currByteCount << std::endl << std::endl;
     }
 
+    // Use to change if message should be printed after program terminates
+    void endDisplay(bool b) {
+        displayOnDestroy = b;
+    }
+
     ~MemCheck() {
+        if (!displayOnDestroy) {
+            return;
+        }
+
         if (currByteCount) {
             std::cout << "\033[31m[Memory Not Freed]: " << currByteCount << " bytes not freed" << std::endl;
         } else {
