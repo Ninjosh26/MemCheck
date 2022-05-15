@@ -1,6 +1,36 @@
-#ifndef MEMORYCHECK_H
-#define MEMORYCHECK_H
+#ifndef MEMCHECK_H
+#define MEMCHECK_H
 #include <iostream>
+
+///////////////////////////////////
+//                               //
+// Sample Programs with MemCheck //
+//                               //
+///////////////////////////////////
+
+/*
+struct Object {
+    int x, y, z;
+    Object(): x(0), y(0), z(0) {}
+};
+int main() {
+    Object* o = new Object[3];
+    fullProgMem.memStats();
+    delete[] o;
+    fullProgMem.memStats();
+}
+
+// For more specific behavior, you can create your own MemCheck objects.
+// You can enable and disable them whenever you chose, and disable program-end 
+// display of heap status.
+// Ex)
+    MemCheckDisplay(false);    <- No display of heap status
+    MemCheck m;
+    int* arr = new int[4];
+    m.disable();               <- Disable heap monitoring
+    double* x = new double[3]; <- This is not counted by m 
+*/
+
 
 // Class that stores information about heap allocation
 class MemCheck {
@@ -13,6 +43,7 @@ class MemCheck {
         bool _enabled;         // If enabled, a MemCheck object tracks heap usage 
     public:
         MemCheck();
+        ~MemCheck();
 
         // Function that prints memory information
         void memStats() {
@@ -29,8 +60,7 @@ class MemCheck {
         // Disable heap memory tracking
         void disable() { _enabled = false; }
 
-        ~MemCheck();
-
+        // Getters
         size_t numAlloc() { return _numAlloc; }
         size_t numDealloc() { return _numDealloc; }
         size_t bytesAlloc() { return _bytesAlloc; }
@@ -56,6 +86,9 @@ static MemCheck fullProgMem;
 static bool displayOnDestroy = true; // Display heap status on program termination
 static MemCheck* mems[MAX_MEMCHECKS];
 static size_t memCount = 0;
+
+// Use to change if message should be printed after program terminates
+void MemCheckDisplay(bool b);
 
 MemCheck::MemCheck(): 
     _numAlloc(0), 
@@ -163,44 +196,5 @@ void operator delete[] (void* memory, size_t size) {
 }
 
 void operator delete[] (void* memory) { std::free(memory); }
-
-///////////////////////////////////
-//                               //
-// Sample Programs with MemCheck //
-//                               //
-///////////////////////////////////
-
-/*
-
-struct Object {
-    int x, y, z;
-
-    Object(): x(0), y(0), z(0) {}
-};
-
-int main() {
-    Object* o = new Object[3];
-
-    fullProgMem.memStats();
-
-    delete[] o;
-
-    fullProgMem.memStats();
-}
-
-// For more specific behavior, you can create your own MemCheck objects.
-// You can enable and disable them whenever you chose, and disable program-end 
-// display of heap status.
-// Ex)
-
-    MemCheckDisplay(false);    <- No display of heap status
-
-    MemCheck m;
-    int* arr = new int[4];
-    m.disable();               <- Disable heap monitoring
-
-    double* x = new double[3]; <- This is not counted by m 
-
-*/
 
 #endif
