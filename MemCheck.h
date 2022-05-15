@@ -24,10 +24,10 @@ int main() {
 // You can enable and disable them whenever you chose, and disable program-end 
 // display of heap status.
 // Ex)
-    MemCheckDisplay(false);    <- No display of heap status
+    MemCheckDisplay(false);    <- No display of heap status on program end
     MemCheck m;
     int* arr = new int[4];
-    m.disable();               <- Disable heap monitoring
+    m.disable();               <- Disable heap monitoring by m
     double* x = new double[3]; <- This is not counted by m 
 */
 
