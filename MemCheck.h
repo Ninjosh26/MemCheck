@@ -39,7 +39,7 @@ class MemCheck {
         size_t _numDealloc;    // Number of total heap deallocations
         size_t _bytesAlloc;    // Total bytes allocated on heap
         size_t _bytesDealloc;  // Total bytes deallocated on heap
-        size_t _currByteCount; // Curr bytes allocated on the heap
+        size_t _currByteCount; // Current bytes allocated on the heap
         bool _enabled;         // If enabled, a MemCheck object tracks heap usage 
     public:
         MemCheck();
